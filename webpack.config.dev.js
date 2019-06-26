@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 const { join } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const playgroundBasedir = join(__dirname, 'doc');
+const playgroundBasedir = join(__dirname, 'docs');
 
 module.exports = {
   mode: 'development',
