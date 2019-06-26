@@ -10,8 +10,8 @@ import {
 } from './../..';
 import Table from './Table';
 import Select from './Select';
-import { BuiltInTheme } from '../../utils/styles';
-import { MenuItemEventHandler } from '../../types';
+import { BuiltInTheme } from '../../src/utils/styles';
+import { MenuItemEventHandler } from '../../src/types';
 
 const selector = {
   events: ['onContextMenu', 'onClick', 'onDoubleClick'],
