@@ -1,15 +1,15 @@
 module.exports = {
   verbose: true,
   roots: [
-    "<rootDir>/src"
+    "<rootDir>/"
   ],
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+  testRegex: "(/tests/.*|(\\.|/)(test|spec))\\.tsx?$",
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
-    "<rootDir>/src/__tests__/setupTests.ts"
+    "<rootDir>/tests/setupTests.ts"
   ],
   moduleFileExtensions: [
     "ts",
@@ -21,6 +21,6 @@ module.exports = {
   ],
   setupFiles: [
     "raf/polyfill",
-    "<rootDir>/src/__tests__/setupTests.ts"
+    "<rootDir>/tests/setupTests.ts"
   ]
 }

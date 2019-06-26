@@ -1,4 +1,4 @@
-import { eventManager } from '../../utils/eventManager';
+import { eventManager } from '../../src/utils/eventManager';
 
 beforeEach(() => eventManager.eventList.clear());
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { Item } from '../../components/Item';
-import { MenuItemEventHandler, TriggerEvent } from '../../types';
+import { Item } from '../../src/components/Item';
+import { MenuItemEventHandler, TriggerEvent } from '../../src/types';
 
 describe('Menu Item', () => {
   it('Should render without crashing', () => {

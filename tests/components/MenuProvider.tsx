@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
-import { MenuProvider } from '../../components/MenuProvider';
-import { eventManager } from '../../utils/eventManager';
-import { DISPLAY_MENU } from '../../utils/actions';
+import { MenuProvider } from '../../src/components/MenuProvider';
+import { eventManager } from '../../src/utils/eventManager';
+import { DISPLAY_MENU } from '../../src/utils/actions';
 
 const menuId = 'foo';
 

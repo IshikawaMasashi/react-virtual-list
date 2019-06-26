@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import { IconFont } from '../../components/IconFont';
+import { IconFont } from '../../src/components/IconFont';
 
 describe('IconFont', () => {
   it('Can render without props', () => {

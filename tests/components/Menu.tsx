@@ -2,11 +2,11 @@ import React from 'react';
 import { mount } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import { Menu } from '../../components/Menu';
-import { Item } from '../../components/Item';
-import { eventManager } from '../../utils/eventManager';
-import { HIDE_ALL, DISPLAY_MENU } from '../../utils/actions';
-import { TriggerEvent } from '../../types';
+import { Menu } from '../../src/components/Menu';
+import { Item } from '../../src/components/Item';
+import { eventManager } from '../../src/utils/eventManager';
+import { HIDE_ALL, DISPLAY_MENU } from '../../src/utils/actions';
+import { TriggerEvent } from '../../src/types';
 
 beforeEach(() => eventManager.eventList.clear());
 
