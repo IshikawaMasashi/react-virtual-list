@@ -1,16 +1,20 @@
 {
-  "name": "react-contexify",
-  "version": "4.1.1",
+  "name": "@ishikawa_masashi/react-split",
+  "version": "1.0.0",
   "main": "lib/index.js",
   "typings": "./lib/index.d.ts",
-  "description": "Add contextmenu to your react component with ease",
+  "description": "A tiny but mighty list virtualization component, with zero dependencies 💪",
   "keywords": [
     "react",
-    "context menu",
+    "reactjs",
     "react-component",
-    "menu",
-    "react-contextmenu",
-    "react-contexify"
+    "virtual",
+    "list",
+    "scrolling",
+    "infinite",
+    "virtualized",
+    "virtualization",
+    "windowing"
   ],
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.dev.js",
@@ -29,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fkhadra/react-contexify.git"
+    "url": "git+https://github.com/IshikawaMasashi/react-virtual-list.git"
   },
-  "author": "Fadi Khadra <fdkhadra@gmail.com> (https://github.com/fkhadra)",
+  "author": "Ishikawa Masashi <Ishikawa_Masashi@hotmail.com> (https://github.com/IshikawaMasashi/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fkhadra/react-contexify/issues"
+    "url": "https://github.com/IshikawaMasashi/react-virtual-list/issues"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",
