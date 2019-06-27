@@ -7,7 +7,7 @@ import {
   contextMenu,
   theme,
   animation
-} from './../..';
+} from '../../src';
 import Table from './Table';
 import Select from './Select';
 import { BuiltInTheme } from '../../src/utils/styles';
