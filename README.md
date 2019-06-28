@@ -13,6 +13,7 @@
 ![typescript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue.svg)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/clauderic/react-tiny-virtual-list/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/clauderic/react-tiny-virtual-list.svg)](https://gitter.im/clauderic/react-tiny-virtual-list)
+[![Coverage Status](https://coveralls.io/repos/github/IshikawaMasashi/react-virtual-list/badge.svg?branch=master)](https://coveralls.io/github/IshikawaMasashi/react-virtual-list?branch=master)
 
 - **Tiny & dependency free** – Only 3kb gzipped
 - **Render millions of items**, without breaking a sweat
