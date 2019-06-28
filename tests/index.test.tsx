@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render } from "react-dom";
 import VirtualList from "../src/components";
+import { ALIGNMENT } from "../src/components/constants";
 
 const HEIGHT = 100;
 const ITEM_HEIGHT = 10;
@@ -136,15 +137,15 @@ describe("VirtualList", () => {
     });
 
     it('scrolls to the correct position for :scrollToAlignment "end"', () => {
+      // render(
+      //   getComponent({
+      //     scrollToIndex: 99
+      //   }),
+      //   node
+      // );
       render(
         getComponent({
-          scrollToIndex: 99
-        }),
-        node
-      );
-      render(
-        getComponent({
-          scrollToAlignment: "end",
+          scrollToAlignment: ALIGNMENT.END,
           scrollToIndex: 49
         }),
         node
@@ -157,15 +158,22 @@ describe("VirtualList", () => {
     });
 
     it('scrolls to the correct position for :scrollToAlignment "center"', () => {
+      // render(
+      //   getComponent({
+      //     scrollToIndex: 99
+      //   }),
+      //   node
+      // );
+      // render(
+      //   getComponent({
+      //     scrollToAlignment: "center",
+      //     scrollToIndex: 49
+      //   }),
+      //   node
+      // );
       render(
         getComponent({
-          scrollToIndex: 99
-        }),
-        node
-      );
-      render(
-        getComponent({
-          scrollToAlignment: "center",
+          scrollToAlignment: ALIGNMENT.CENTER,
           scrollToIndex: 49
         }),
         node
@@ -182,6 +190,12 @@ describe("VirtualList", () => {
       render(getComponent({ scrollToIndex: 50 }), node);
       expect(node.textContent).toContain("Item #50");
 
+      // Making rows taller pushes name off/beyond the scrolled area
+      // render(getComponent({ scrollToIndex: 50, itemSize: 20 }), node);
+      // expect(node.textContent).toContain("Item #50");
+    });
+
+    it("updates :scrollToIndex position when :itemSize changes", () => {
       // Making rows taller pushes name off/beyond the scrolled area
       render(getComponent({ scrollToIndex: 50, itemSize: 20 }), node);
       expect(node.textContent).toContain("Item #50");
@@ -200,9 +214,19 @@ describe("VirtualList", () => {
       render(getComponent(), node);
       expect(node.textContent).not.toContain("Item #50");
 
+      // render(getComponent({ scrollToIndex: 50 }), node);
+      // expect(node.textContent).toContain("Item #50");
+    });
+
+
+    it("updates :scrollToIndex position when :scrollToIndex changes", () => {
+      // render(getComponent(), node);
+      // expect(node.textContent).not.toContain("Item #50");
+
       render(getComponent({ scrollToIndex: 50 }), node);
       expect(node.textContent).toContain("Item #50");
     });
+
 
     it("updates scroll position if size shrinks smaller than the current scroll", () => {
       render(getComponent({ scrollToIndex: 500 }), node);
@@ -237,15 +261,30 @@ describe("VirtualList", () => {
       expect(first.textContent).toContain("Item #0");
       expect(last.textContent).toContain("Item #9");
 
+      // render(
+      //   getComponent({
+      //     scrollOffset: 100
+      //   }),
+      //   node
+      // );
+      // items = node.querySelectorAll(".item");
+      // first = items[0];
+      // last = items[items.length - 1];
+
+      // expect(first.textContent).toContain("Item #10");
+      // expect(last.textContent).toContain("Item #19");
+    });
+
+    it("renders correctly when an :scrollOffset property is specified after the component has initialized", () => {
       render(
         getComponent({
           scrollOffset: 100
         }),
         node
       );
-      items = node.querySelectorAll(".item");
-      first = items[0];
-      last = items[items.length - 1];
+      const items = node.querySelectorAll(".item");
+      const first = items[0];
+      const last = items[items.length - 1];
 
       expect(first.textContent).toContain("Item #10");
       expect(last.textContent).toContain("Item #19");
