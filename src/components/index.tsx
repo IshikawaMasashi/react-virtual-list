@@ -321,6 +321,7 @@ const VirtualList: React.FC<Props> = props => {
   //     scrollTo(offset);
   //   }
   // };
+  
   useEffect(() => {
     const { offset, scrollChangeReason } = state;
     if (scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED) {
