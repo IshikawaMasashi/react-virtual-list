@@ -6,13 +6,12 @@
 
 > A tiny but mighty list virtualization library, with zero dependencies 💪
 
-[![npm version](https://img.shields.io/npm/v/react-tiny-virtual-list.svg)](https://www.npmjs.com/package/react-tiny-virtual-list)
-[![npm downloads](https://img.shields.io/npm/dm/react-tiny-virtual-list.svg)](https://www.npmjs.com/package/react-tiny-virtual-list)
+[![npm version](https://img.shields.io/npm/v/@ishikawa_masashi/react-virtual-list.svg)](https://www.npmjs.com/package/@ishikawa_masashi/react-virtual-list)
+[![npm downloads](https://img.shields.io/npm/dm/@ishikawa_masashi/react-virtual-list.svg)](https://www.npmjs.com/package/@ishikawa_masashi/react-virtual-list)
 [![Build Status](https://travis-ci.org/IshikawaMasashi/react-virtual-list.svg?branch=master)](https://travis-ci.org/IshikawaMasashi/react-virtual-list)
 [![codecov](https://codecov.io/gh/clauderic/react-tiny-virtual-list/branch/master/graph/badge.svg)](https://codecov.io/gh/clauderic/react-tiny-virtual-list)
 ![typescript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue.svg)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/clauderic/react-tiny-virtual-list/blob/master/LICENSE)
-[![Gitter](https://badges.gitter.im/clauderic/react-tiny-virtual-list.svg)](https://gitter.im/clauderic/react-tiny-virtual-list)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg?maxAge=2592000)](https://github.com/IshikawaMasashi/react-virtual-list/blob/master/LICENSE)
 [![Coverage Status](https://coveralls.io/repos/github/IshikawaMasashi/react-virtual-list/badge.svg?branch=master)](https://coveralls.io/github/IshikawaMasashi/react-virtual-list?branch=master)
 
 - **Tiny & dependency free** – Only 3kb gzipped
