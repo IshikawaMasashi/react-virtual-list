@@ -1,186 +1,245 @@
-import React, { Component, ChangeEvent, MouseEvent } from 'react';
-import {
-  Menu,
-  Item,
-  Separator,
-  Submenu,
-  contextMenu,
-  theme,
-  animation
-} from '../../src';
-import Table from './Table';
-import Select from './Select';
-import { BuiltInTheme } from '../../src/utils/styles';
-import { MenuItemEventHandler } from '../../src/types';
+import React from "react";
 
-const selector = {
-  events: ['onContextMenu', 'onClick', 'onDoubleClick'],
-  themes: [
-    'none',
-    ...Object.keys(theme).map(k => theme[k as keyof BuiltInTheme])
-  ],
-  animations: [
-    'none',
-    ...Object.keys(animation).map(k => animation[k as keyof typeof animation])
-  ]
-};
+// import PropTypes from 'prop-types';
+import { ALIGNMENT } from "../../src/components/constants";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Divider from "@material-ui/core/Divider";
+import Drawer from "@material-ui/core/Drawer";
+import Grid from "@material-ui/core/Grid";
+import Hidden from "@material-ui/core/Hidden";
+import IconButton from "@material-ui/core/IconButton";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import MailIcon from "@material-ui/icons/Mail";
+import MenuIcon from "@material-ui/icons/Menu";
+import Slider from "@material-ui/lab/Slider";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import { VirtualList, ItemStyle } from "../../src";
+import VolumeDown from "@material-ui/icons/VolumeDown";
+import VolumeUp from "@material-ui/icons/VolumeUp";
 
-const square = {
-  x: 50,
-  y: 50,
-  width: 100,
-  height: 100
-};
+const drawerWidth = 240;
 
-const menuId = 1;
-const MyAwesomeMenu: React.SFC<{
-  theme: string;
-  animation: string;
-  onClick: (p: any) => void;
-}> = ({ theme, animation, onClick }) => (
-  <Menu id={menuId} theme={theme} animation={animation}>
-    <Item onClick={onClick}>
-      <span role="role">💩</span>
-      Foo
-    </Item>
-    <Item onClick={onClick}>Ipsum</Item>
-    <Item disabled>Sit</Item>
-    {null}
-    <Separator />
-    <Item disabled>Dolor</Item>
-    <Separator />
-    <Submenu label="Foobar">
-      {null}
-      <Item onClick={onClick}>Bar</Item>
-    </Submenu>
-  </Menu>
-);
-
-class App extends Component {
-  state = {
-    event: selector.events[0],
-    theme: selector.themes[0],
-    animation: selector.animations[0],
-    payload: {}
-  };
-
-  canvasRef!: HTMLCanvasElement;
-
-  componentDidMount() {
-    const ctx = this.canvasRef.getContext('2d')!;
-    ctx.fillRect(square.x, square.y, square.width, square.height);
-    ctx.font = '16px arial';
-    ctx.fillStyle = 'black';
-    ctx.fillText('only the black box', 10, 20);
-    ctx.fillText('trigger the event', 10, 40);
-  }
-
-  handleMenuItem = (payload: MenuItemEventHandler) => {
-    const { clientX, clientY } = payload.event;
-    this.setState({
-      payload: {
-        event: { clientX, clientY },
-        props: payload.props
-      }
-    });
-  };
-
-  handleClick = (e: MouseEvent) => {
-    e.preventDefault();
-    if ((e.target as HTMLElement).tagName === 'CANVAS') {
-      const rect = this.canvasRef.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const isColliding =
-        x >= square.x &&
-        x <= square.x + square.width &&
-        y >= square.y &&
-        y <= square.y + square.height;
-
-      if (!isColliding) {
-        return;
-      }
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: "flex"
+  },
+  drawer: {
+    [theme.breakpoints.up("sm")]: {
+      width: drawerWidth,
+      flexShrink: 0
     }
-
-    contextMenu.show({
-      id: menuId,
-      event: e,
-      props: {
-        now: Date.now()
-      }
-    });
-  };
-
-  handleSelector = (e: ChangeEvent<HTMLSelectElement>) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  };
-
-  render() {
-    return (
-      <main>
-        <div className="settings-container">
-          <ul>
-            <li>
-              <label htmlFor="event">Event:</label>
-              <Select
-                name="event"
-                value={this.state.event}
-                data={selector.events}
-                onChange={this.handleSelector}
-              />
-            </li>
-            <li>
-              <label htmlFor="theme">Theme:</label>
-              <Select
-                name="theme"
-                value={this.state.theme}
-                data={selector.themes}
-                onChange={this.handleSelector}
-              />
-            </li>
-            <li>
-              <label htmlFor="animation">Animation:</label>
-              <Select
-                name="animation"
-                value={this.state.animation}
-                data={selector.animations}
-                onChange={this.handleSelector}
-              />
-            </li>
-          </ul>
-          <pre>{JSON.stringify(this.state.payload, null, 2)}</pre>
-        </div>
-        <hr />
-        <div className="boxes-container">
-          <div
-            className="box"
-            {...{ [`${this.state.event}`]: this.handleClick }}
-          >
-            event is triggered everywhere in the box
-          </div>
-          <hr />
-          <div>
-            <div>This is a canvas</div>
-            <canvas
-              {...{ [`${this.state.event}`]: this.handleClick }}
-              ref={(ref: HTMLCanvasElement) => (this.canvasRef = ref)}
-              width="200"
-              height="200"
-              style={{ border: '1px solid red' }}
-            >
-              this is a canvas
-            </canvas>
-          </div>
-          <hr />
-          <Table event={this.state.event} handleEvent={this.handleClick} />
-        </div>
-
-        <MyAwesomeMenu {...this.state} onClick={this.handleMenuItem} />
-      </main>
-    );
+  },
+  appBar: {
+    marginLeft: drawerWidth,
+    [theme.breakpoints.up("sm")]: {
+      width: `calc(100% - ${drawerWidth}px)`
+    }
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none"
+    }
+  },
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: drawerWidth
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(12)
   }
+}));
+
+type Props = {};
+export default function ResponsiveDrawer(props: Props) {
+  // const { container } = props;
+  const classes = useStyles({});
+  const theme = useTheme();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  // const [value, setValue] = React.useState<number | number[]>(30);
+  const [itemSize, setItemSize] = React.useState<number | number[]>(50);
+
+  const handleChange = (event: any, newValue: number | number[]) => {
+    setItemSize(newValue < 18 ? 18 : newValue);
+  };
+
+  function handleDrawerToggle() {
+    setMobileOpen(!mobileOpen);
+  }
+  const renderItem = ({
+    style,
+    index
+  }: {
+    style: ItemStyle;
+    index: number;
+  }) => {
+    return (
+      <div className="Row" style={style} key={index}>
+        Row #{index}
+      </div>
+    );
+  };
+
+  const drawer = (
+    <div>
+      <div className={classes.toolbar} />
+      <Divider />
+      <List>
+        <ListSubheader>
+          <Typography variant="h6" noWrap>
+            Basic setup
+          </Typography>
+        </ListSubheader>
+        <ListItem button selected key={"Elements of equal height"}>
+          <ListItemText primary={"Elements of equal height"} />
+        </ListItem>
+        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {["All mail", "Trash", "Spam"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  );
+
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="Open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            React Virtual List
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <nav className={classes.drawer} aria-label="Mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden smUp implementation="css">
+          <Drawer
+            variant="temporary"
+            anchor={theme.direction === "rtl" ? "right" : "left"}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            ModalProps={{
+              keepMounted: true // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Grid container spacing={2}>
+          <Grid item></Grid>
+          <Grid item></Grid>
+          <Grid item>
+            <Typography variant="h6" noWrap>
+              Item height:
+            </Typography>
+          </Grid>
+          <Grid item xs>
+            <Slider
+              value={itemSize}
+              onChange={handleChange}
+              aria-labelledby="continuous-slider"
+            />
+          </Grid>
+          <Grid item></Grid>
+          <Grid item></Grid>
+          <Grid item></Grid>
+        </Grid>
+        <VirtualList
+          width="auto"
+          height={400}
+          itemCount={1000}
+          renderItem={renderItem}
+          itemSize={itemSize}
+          className="VirtualList"
+        />
+        <Typography paragraph>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
+          dolor purus non enim praesent elementum facilisis leo vel. Risus at
+          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
+          quisque non tellus. Convallis convallis tellus id interdum velit
+          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
+          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
+          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
+          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
+          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
+          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
+          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
+          faucibus et molestie ac.
+        </Typography>
+        <Typography paragraph>
+          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
+          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
+          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
+          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
+          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
+          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
+          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
+          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
+          morbi tristique senectus et. Adipiscing elit duis tristique
+          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
+          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
+          posuere sollicitudin aliquam ultrices sagittis orci a.
+        </Typography>
+      </main>
+    </div>
+  );
 }
 
-export default App;
+// ResponsiveDrawer.propTypes = {
+//   // Injected by the documentation to work in an iframe.
+//   // You won't need it on your project.
+//   container: PropTypes.object,
+// };

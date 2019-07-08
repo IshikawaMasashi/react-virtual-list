@@ -98,7 +98,7 @@ const STYLE_STICKY_ITEM = {
 
 const { useRef, useState, useEffect } = React;
 
-const VirtualList: React.FC<Props> = props => {
+function VirtualList(props: Props) {
   const useForceUpdate = () => {
     const [, setState] = useState();
     return () => setState({});
@@ -286,6 +286,14 @@ const VirtualList: React.FC<Props> = props => {
   // };
 
   useEffect(() => {
+    const { itemSize } = props;
+    sizeAndPositionManager.updateConfig({
+      itemSizeGetter: itemSizeGetter(itemSize)
+    });
+    recomputeSizes();
+  }, [props.itemSize]);
+
+  useEffect(() => {
     const { itemCount } = props;
 
     sizeAndPositionManager.updateConfig({
@@ -321,7 +329,7 @@ const VirtualList: React.FC<Props> = props => {
   //     scrollTo(offset);
   //   }
   // };
-  
+
   useEffect(() => {
     const { offset, scrollChangeReason } = state;
     if (scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED) {
@@ -350,7 +358,7 @@ const VirtualList: React.FC<Props> = props => {
 
     if (
       offset < 0 ||
-      state.offset === offset ||
+      //   state.offset === offset ||
       event.target !== rootNodeRef.current
     ) {
       return;
@@ -484,7 +492,7 @@ const VirtualList: React.FC<Props> = props => {
       <div style={innerStyle}>{items}</div>
     </div>
   );
-};
+}
 
 VirtualList.defaultProps = {
   overscanCount: 3,
