@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   margin: 0;
   padding: 0;
@@ -9,9 +9,9 @@ body {
     sans-serif;
   color: #333;
   -webkit-font-smoothing: antialiased;
-}
+} */
 
-header {
+/* header {
   display: flex;
   align-items: center;
   padding: 15px 23px;
@@ -20,13 +20,13 @@ header {
 
   color: #fff;
   font-weight: 600;
-}
+} */
 
-header img {
+/* header img {
   position: relative;
   top: -2px;
   margin-right: 15px;
-}
+} */
 
 .VirtualList {
   margin: 20px;
