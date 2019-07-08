@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render } from "react-dom";
-import VirtualList from "../src/components";
-import { ALIGNMENT } from "../src/components/constants";
+import { VirtualList, ALIGNMENT } from "../src";
+// import { ALIGNMENT } from "../src/components/constants";
 
 const HEIGHT = 100;
 const ITEM_HEIGHT = 10;
@@ -151,7 +151,6 @@ describe("VirtualList", () => {
         node
       );
 
-      
       // 100 items * 10 item height = 1,000 total item height; 10 items can be visible at a time.
       expect(node.textContent).toContain("Item #40");
       expect(node.textContent).toContain("Item #49");
@@ -218,7 +217,6 @@ describe("VirtualList", () => {
       // expect(node.textContent).toContain("Item #50");
     });
 
-
     it("updates :scrollToIndex position when :scrollToIndex changes", () => {
       // render(getComponent(), node);
       // expect(node.textContent).not.toContain("Item #50");
@@ -226,7 +224,6 @@ describe("VirtualList", () => {
       render(getComponent({ scrollToIndex: 50 }), node);
       expect(node.textContent).toContain("Item #50");
     });
-
 
     it("updates scroll position if size shrinks smaller than the current scroll", () => {
       render(getComponent({ scrollToIndex: 500 }), node);

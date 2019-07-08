@@ -8,6 +8,6 @@
 // export { contextMenu } from './utils/contextMenu';
 // export { theme, animation } from './utils/styles';
 
-export { default as VirtualList } from "./components/VirtualList";
-export { ItemStyle } from "./components/VirtualList";
-export { ALIGNMENT } from "./components/constants";
+export { default as VirtualList } from './components/VirtualList';
+export { ItemStyle } from './components/VirtualList';
+export { ALIGNMENT } from './components/constants';
