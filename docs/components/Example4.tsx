@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { VirtualList, ItemStyle } from "../../src";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
+import Input from "@material-ui/core/Input";
 
 const { useEffect, useRef } = React;
 
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       padding: 18
+    },
+    input: {
+      width: 42
     }
   })
 );
@@ -31,12 +35,28 @@ type Props = {
 };
 
 // コンポーネントを定義
-function Example1({ title }: Props) {
+function Example4({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
   const [itemSize, setItemSize] = React.useState<number | number[]>(50);
+  const [value, setValue] = React.useState<
+    number | string | Array<number | string>
+  >(0);
+
   const handleChange = (event: any, newValue: number | number[]) => {
     setItemSize(newValue < 18 ? 18 : newValue);
+  };
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value === "" ? "" : Number(event.target.value));
+  };
+
+  const handleBlur = () => {
+    if (value < 0) {
+      setValue(0);
+    } else if (value > 100) {
+      setValue(100);
+    }
   };
 
   const renderItem = ({
@@ -63,10 +83,19 @@ function Example1({ title }: Props) {
           </Typography>
         </Grid>
         <Grid item xs>
-          <Slider
-            value={itemSize}
-            onChange={handleChange}
-            aria-labelledby="continuous-slider"
+          <Input
+            className={classes.input}
+            value={value}
+            margin="dense"
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            inputProps={{
+              step: 1,
+              min: 0,
+              max: 100,
+              type: "number",
+              "aria-labelledby": "input-slider"
+            }}
           />
         </Grid>
         <Grid item></Grid>
@@ -78,9 +107,10 @@ function Example1({ title }: Props) {
         renderItem={renderItem}
         itemSize={itemSize}
         className="VirtualList"
+        scrollToIndex={Number(value)}
       />
     </div>
   );
 }
 
-export default Example1;
+export default Example4;

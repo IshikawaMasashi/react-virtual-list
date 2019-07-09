@@ -21,6 +21,15 @@ import { VirtualList, ItemStyle } from "../../src";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
 import Example1 from "./Example1";
+import Example2 from "./Example2";
+import Example3 from "./Example3";
+import Example4 from "./Example4";
+import Example5 from "./Example5";
+
+enum View {
+  Example1,
+  Example2
+}
 
 const drawerWidth = 240;
 
@@ -61,13 +70,42 @@ const useStyles = makeStyles(theme => ({
 
 type Props = {};
 export default function ResponsiveDrawer(props: Props) {
+  const basicSetup = [
+    "Elements of equal height",
+    "Variable heights",
+    "Horizontal list"
+  ];
+
+  const controlledProps = ["Scroll to index", "Controlled scroll offset"];
+
+  const labels = basicSetup.concat(controlledProps);
+
+  const examples = [
+    <Example1 />,
+    <Example2 />,
+    <Example3 />,
+    <Example4 />,
+    <Example5 />
+  ];
+
   // const { container } = props;
   const classes = useStyles({});
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const [view, setView] = React.useState(View.Example1);
+
   function handleDrawerToggle() {
     setMobileOpen(!mobileOpen);
+  }
+
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  function handleListItemClick(
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ): void {
+    setSelectedIndex(index);
   }
 
   const drawer = (
@@ -86,29 +124,38 @@ export default function ResponsiveDrawer(props: Props) {
             Basic setup
           </Typography>
         </ListSubheader>
-        <ListItem button selected key={"Elements of equal height"}>
-          <ListItemText primary={"Elements of equal height"} />
-        </ListItem>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+        {basicSetup.map((text, index) => (
+          <ListItem
+            button
+            key={text}
+            selected={selectedIndex === index}
+            onClick={event => handleListItemClick(event, index)}
+          >
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
+        <ListSubheader>
+          <Typography variant="h6" noWrap>
+            Controlled props
+          </Typography>
+        </ListSubheader>
+        {controlledProps.map((text, index) => (
+          <ListItem
+            button
+            key={text}
+            selected={selectedIndex === index + basicSetup.length}
+            onClick={event =>
+              handleListItemClick(event, index + basicSetup.length)
+            }
+          >
             <ListItemText primary={text} />
           </ListItem>
         ))}
       </List>
+      <Divider />
     </div>
   );
 
@@ -127,7 +174,7 @@ export default function ResponsiveDrawer(props: Props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title} noWrap>
-            React Virtual List
+            {labels[selectedIndex]}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -163,7 +210,7 @@ export default function ResponsiveDrawer(props: Props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Example1></Example1>
+        {examples[selectedIndex]}
       </main>
     </div>
   );

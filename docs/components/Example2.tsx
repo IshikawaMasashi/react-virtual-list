@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { VirtualList, ItemStyle } from "../../src";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
+import Button from "@material-ui/core/Button";
 
 const { useEffect, useRef } = React;
 
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     paper: {
       padding: 18
+    },
+    button: {
+      margin: theme.spacing(1)
     }
   })
 );
@@ -31,13 +35,28 @@ type Props = {
 };
 
 // コンポーネントを定義
-function Example1({ title }: Props) {
+function Example2({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
   const [itemSize, setItemSize] = React.useState<number | number[]>(50);
   const handleChange = (event: any, newValue: number | number[]) => {
     setItemSize(newValue < 18 ? 18 : newValue);
   };
+
+  function createRowHeights() {
+    const heights = [];
+    for (let i = 0; i < 1000; ++i) {
+      heights.push(Math.round(Math.random() * 130 + 20));
+    }
+    return heights;
+  }
+  const [rowHeights, setRowHeights] = React.useState<number[]>(
+    createRowHeights()
+  );
+
+  function onClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    setRowHeights(createRowHeights());
+  }
 
   const renderItem = ({
     style,
@@ -57,17 +76,15 @@ function Example1({ title }: Props) {
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item></Grid>
-        <Grid item>
-          <Typography variant="h6" noWrap>
-            Item height:
-          </Typography>
-        </Grid>
+        <Grid item></Grid>
         <Grid item xs>
-          <Slider
-            value={itemSize}
-            onChange={handleChange}
-            aria-labelledby="continuous-slider"
-          />
+          <Button
+            variant="contained"
+            className={classes.button}
+            onClick={onClick}
+          >
+            Randomize heights
+          </Button>
         </Grid>
         <Grid item></Grid>
       </Grid>
@@ -76,11 +93,11 @@ function Example1({ title }: Props) {
         height={400}
         itemCount={1000}
         renderItem={renderItem}
-        itemSize={itemSize}
+        itemSize={index => rowHeights[index]}
         className="VirtualList"
       />
     </div>
   );
 }
 
-export default Example1;
+export default Example2;

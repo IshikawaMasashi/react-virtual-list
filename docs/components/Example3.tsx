@@ -7,6 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import { VirtualList, ItemStyle } from "../../src";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
+import { DIRECTION } from "../../src/components/constants";
 
 const { useEffect, useRef } = React;
 
@@ -31,10 +32,10 @@ type Props = {
 };
 
 // コンポーネントを定義
-function Example1({ title }: Props) {
+function Example3({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
-  const [itemSize, setItemSize] = React.useState<number | number[]>(50);
+  const [itemSize, setItemSize] = React.useState<number | number[]>(100);
   const handleChange = (event: any, newValue: number | number[]) => {
     setItemSize(newValue < 18 ? 18 : newValue);
   };
@@ -72,15 +73,16 @@ function Example1({ title }: Props) {
         <Grid item></Grid>
       </Grid>
       <VirtualList
-        width="auto"
-        height={400}
+        width={400}
+        height={120}
         itemCount={1000}
         renderItem={renderItem}
         itemSize={itemSize}
         className="VirtualList"
+        scrollDirection={DIRECTION.HORIZONTAL}
       />
     </div>
   );
 }
 
-export default Example1;
+export default Example3;
