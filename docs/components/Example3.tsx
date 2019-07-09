@@ -35,6 +35,9 @@ type Props = {
 function Example3({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
+
+  const itemCount = 100000;
+
   const [itemSize, setItemSize] = React.useState<number | number[]>(100);
   const handleChange = (event: any, newValue: number | number[]) => {
     setItemSize(newValue < 18 ? 18 : newValue);
@@ -56,26 +59,10 @@ function Example3({ title }: Props) {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item></Grid>
-        <Grid item>
-          <Typography variant="h6" noWrap>
-            Item height:
-          </Typography>
-        </Grid>
-        <Grid item xs>
-          <Slider
-            value={itemSize}
-            onChange={handleChange}
-            aria-labelledby="continuous-slider"
-          />
-        </Grid>
-        <Grid item></Grid>
-      </Grid>
       <VirtualList
-        width={400}
+        width={600}
         height={120}
-        itemCount={1000}
+        itemCount={itemCount}
         renderItem={renderItem}
         itemSize={itemSize}
         className="VirtualList"

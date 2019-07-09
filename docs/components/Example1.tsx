@@ -74,7 +74,7 @@ function Example1({ title }: Props) {
       <VirtualList
         width="auto"
         height={400}
-        itemCount={1000}
+        itemCount={100000}
         renderItem={renderItem}
         itemSize={itemSize}
         className="VirtualList"

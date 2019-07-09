@@ -38,6 +38,9 @@ type Props = {
 function Example2({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
+
+  const itemCount = 100000;
+
   const [itemSize, setItemSize] = React.useState<number | number[]>(50);
   const handleChange = (event: any, newValue: number | number[]) => {
     setItemSize(newValue < 18 ? 18 : newValue);
@@ -45,7 +48,7 @@ function Example2({ title }: Props) {
 
   function createRowHeights() {
     const heights = [];
-    for (let i = 0; i < 1000; ++i) {
+    for (let i = 0; i < itemCount; ++i) {
       heights.push(Math.round(Math.random() * 130 + 20));
     }
     return heights;
@@ -91,7 +94,7 @@ function Example2({ title }: Props) {
       <VirtualList
         width="auto"
         height={400}
-        itemCount={1000}
+        itemCount={itemCount}
         renderItem={renderItem}
         itemSize={index => rowHeights[index]}
         className="VirtualList"

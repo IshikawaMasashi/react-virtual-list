@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: 18
     },
     input: {
-      width: 42
+      width: 96
     }
   })
 );
@@ -38,6 +38,9 @@ type Props = {
 function Example5({ title }: Props) {
   // ここでクラス名を取得
   const classes = useStyles({});
+
+  const itemCount = 100000; // アイテム数
+
   const [itemSize, setItemSize] = React.useState<number | number[]>(50);
   const [value, setValue] = React.useState<
     number | string | Array<number | string>
@@ -54,8 +57,6 @@ function Example5({ title }: Props) {
   const handleBlur = () => {
     if (value < 0) {
       setValue(0);
-    } else if (value > 100) {
-      setValue(100);
     }
   };
 
@@ -77,11 +78,7 @@ function Example5({ title }: Props) {
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item></Grid>
-        <Grid item>
-          <Typography variant="h6" noWrap>
-            Item height:
-          </Typography>
-        </Grid>
+        <Grid item></Grid>
         <Grid item xs>
           <Input
             className={classes.input}
@@ -92,7 +89,6 @@ function Example5({ title }: Props) {
             inputProps={{
               step: 1,
               min: 0,
-              max: 100,
               type: "number",
               "aria-labelledby": "input-slider"
             }}
@@ -103,7 +99,7 @@ function Example5({ title }: Props) {
       <VirtualList
         width="auto"
         height={400}
-        itemCount={1000}
+        itemCount={itemCount}
         renderItem={renderItem}
         itemSize={itemSize}
         className="VirtualList"
