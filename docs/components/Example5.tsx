@@ -78,7 +78,11 @@ function Example5({ title }: Props) {
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid item></Grid>
-        <Grid item></Grid>
+        <Grid item>
+          <Typography variant="h6" noWrap>
+            Scroll to offset :
+          </Typography>
+        </Grid>
         <Grid item xs>
           <Input
             className={classes.input}
@@ -87,7 +91,7 @@ function Example5({ title }: Props) {
             onChange={handleInputChange}
             onBlur={handleBlur}
             inputProps={{
-              step: 1,
+              step: 10,
               min: 0,
               type: "number",
               "aria-labelledby": "input-slider"

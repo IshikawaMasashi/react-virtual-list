@@ -81,6 +81,9 @@ function Example4({ title }: Props) {
       <Grid container spacing={2}>
         <Grid item></Grid>
         <Grid item></Grid>
+        <Typography variant="h6" noWrap>
+          Scroll to index :
+        </Typography>
         <Grid item xs>
           <Input
             className={classes.input}

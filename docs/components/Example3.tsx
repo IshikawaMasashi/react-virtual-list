@@ -52,7 +52,8 @@ function Example3({ title }: Props) {
   }) => {
     return (
       <div className="Row" style={style} key={index}>
-        Row #{index}
+        <div>Row</div>
+        <div>#{index}</div>
       </div>
     );
   };
