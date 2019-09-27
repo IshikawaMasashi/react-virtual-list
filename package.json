@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.dev.js",
-    "test": "cross-env NODE_ENV=test jest --verbose",
+    "test": "cross-env NODE_ENV=test jest --verbose && codecov",
     "test:coverage": "cross-env NODE_ENV=test jest --coverage && cat ./coverage/lcov.info | coveralls",
     "prettier": "prettier --parser typescript --single-quote --write \"src/**/*.{ts,tsx}\"",
     "prebuild": "npm run prettier && npm run test",
