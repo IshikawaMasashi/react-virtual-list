@@ -1,8 +1,6 @@
 module.exports = {
   verbose: true,
-  roots: [
-    "<rootDir>/"
-  ],
+  roots: ["<rootDir>/"],
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
@@ -11,16 +9,8 @@ module.exports = {
     "<rootDir>/node_modules/",
     "<rootDir>/tests/setupTests.ts"
   ],
-  moduleFileExtensions: [
-    "ts",
-    "tsx",
-    "js",
-    "jsx",
-    "json",
-    "node"
-  ],
-  setupFiles: [
-    "raf/polyfill",
-    "<rootDir>/tests/setupTests.ts"
-  ]
-}
+  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  coverageDirectory: "./coverage/",
+  collectCoverage: true,
+  setupFiles: ["raf/polyfill", "<rootDir>/tests/setupTests.ts"]
+};
