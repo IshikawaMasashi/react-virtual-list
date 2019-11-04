@@ -1,6 +1,5 @@
-import * as React from 'react';
-// import * as PropTypes from "prop-types";
-import SizeAndPositionManager, { ItemSize } from './SizeAndPositionManager';
+import * as React from "react";
+import SizeAndPositionManager, { ItemSize } from "./SizeAndPositionManager";
 import {
   ALIGNMENT,
   DIRECTION,
@@ -10,11 +9,11 @@ import {
   positionProp,
   scrollProp,
   sizeProp
-} from './constants';
+} from "./constants";
 
-export { DIRECTION as ScrollDirection } from './constants';
+export { DIRECTION as ScrollDirection } from "./constants";
 
-export type ItemPosition = 'absolute' | 'sticky';
+export type ItemPosition = "absolute" | "sticky";
 
 export interface ItemStyle {
   position: ItemPosition;
@@ -68,32 +67,32 @@ export interface State {
 }
 
 const STYLE_WRAPPER: React.CSSProperties = {
-  overflow: 'auto',
-  willChange: 'transform',
-  WebkitOverflowScrolling: 'touch'
+  overflow: "auto",
+  willChange: "transform",
+  WebkitOverflowScrolling: "touch"
 };
 
 const STYLE_INNER: React.CSSProperties = {
-  position: 'relative',
-  width: '100%',
-  minHeight: '100%'
+  position: "relative",
+  width: "100%",
+  minHeight: "100%"
 };
 
 const STYLE_ITEM: {
-  position: ItemStyle['position'];
-  top: ItemStyle['top'];
-  left: ItemStyle['left'];
-  width: ItemStyle['width'];
+  position: ItemStyle["position"];
+  top: ItemStyle["top"];
+  left: ItemStyle["left"];
+  width: ItemStyle["width"];
 } = {
-  position: 'absolute' as ItemPosition,
+  position: "absolute" as ItemPosition,
   top: 0,
   left: 0,
-  width: '100%'
+  width: "100%"
 };
 
 const STYLE_STICKY_ITEM = {
   ...STYLE_ITEM,
-  position: 'sticky' as ItemPosition
+  position: "sticky" as ItemPosition
 };
 
 const { useRef, useState, useEffect } = React;
@@ -146,20 +145,20 @@ function VirtualList(props: Props) {
     index: number,
     itemSize: number | number[] | ((index: number) => number)
   ) => {
-    if (typeof itemSize === 'function') {
+    if (typeof itemSize === "function") {
       return itemSize(index);
     }
 
     return Array.isArray(itemSize) ? itemSize[index] : itemSize;
   };
 
-  const itemSizeGetter = (itemSize: Props['itemSize']) => {
+  const itemSizeGetter = (itemSize: Props["itemSize"]) => {
     return (index: number) => getSize(index, itemSize);
   };
   const getEstimatedItemSize = (props: Props /*props = this.props*/) => {
     return (
       props.estimatedItemSize ||
-      (typeof props.itemSize === 'number' && props.itemSize) ||
+      (typeof props.itemSize === "number" && props.itemSize) ||
       50
     );
   };
@@ -216,7 +215,7 @@ function VirtualList(props: Props) {
   // const componentDidMount = () => {
   useEffect(() => {
     const { scrollOffset, scrollToIndex } = props;
-    rootNodeRef.current!.addEventListener('scroll', handleScroll, {
+    rootNodeRef.current!.addEventListener("scroll", handleScroll, {
       passive: true
     });
 
@@ -226,7 +225,7 @@ function VirtualList(props: Props) {
       scrollTo(getOffsetForIndex(scrollToIndex));
     }
     return () => {
-      rootNodeRef.current!.removeEventListener('scroll', handleScroll);
+      rootNodeRef.current!.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -318,7 +317,7 @@ function VirtualList(props: Props) {
     // const scrollPropsHaveChanged = true;
     // const itemPropsHaveChanged = false;
 
-    if (typeof scrollToIndex === 'number') {
+    if (typeof scrollToIndex === "number") {
       setState({
         offset: getOffsetForIndex(scrollToIndex, scrollToAlignment, itemCount),
         scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
@@ -376,7 +375,7 @@ function VirtualList(props: Props) {
       scrollChangeReason: SCROLL_CHANGE_REASON.OBSERVED
     });
 
-    if (typeof onScroll === 'function') {
+    if (typeof onScroll === "function") {
       onScroll(offset, event);
     }
   };
@@ -468,11 +467,11 @@ function VirtualList(props: Props) {
     );
 
     if (scrollDirection === DIRECTION.HORIZONTAL) {
-      innerStyle.display = 'flex';
+      innerStyle.display = "flex";
     }
   }
 
-  if (typeof start !== 'undefined' && typeof stop !== 'undefined') {
+  if (typeof start !== "undefined" && typeof stop !== "undefined") {
     for (let index = start; index <= stop; index++) {
       if (stickyIndices != null && stickyIndices.includes(index)) {
         continue;
@@ -486,7 +485,7 @@ function VirtualList(props: Props) {
       );
     }
 
-    if (typeof onItemsRendered === 'function') {
+    if (typeof onItemsRendered === "function") {
       onItemsRendered({
         startIndex: start,
         stopIndex: stop
@@ -504,7 +503,7 @@ function VirtualList(props: Props) {
 VirtualList.defaultProps = {
   overscanCount: 3,
   scrollDirection: DIRECTION.VERTICAL,
-  width: '100%'
+  width: "100%"
 };
 
 export default VirtualList;

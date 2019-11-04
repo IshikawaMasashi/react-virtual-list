@@ -1,18 +1,18 @@
 export enum ALIGNMENT {
-  AUTO = 'auto',
-  START = 'start',
-  CENTER = 'center',
-  END = 'end'
+  AUTO = "auto",
+  START = "start",
+  CENTER = "center",
+  END = "end"
 }
 
 export enum DIRECTION {
-  HORIZONTAL = 'horizontal',
-  VERTICAL = 'vertical'
+  HORIZONTAL = "horizontal",
+  VERTICAL = "vertical"
 }
 
 export enum SCROLL_CHANGE_REASON {
-  OBSERVED = 'observed',
-  REQUESTED = 'requested'
+  OBSERVED = "observed",
+  REQUESTED = "requested"
 }
 
 // export const scrollProp = {
@@ -26,8 +26,8 @@ export enum SCROLL_CHANGE_REASON {
 // };
 
 export enum scrollProp {
-  vertical = 'scrollTop',
-  horizontal = 'scrollLeft'
+  vertical = "scrollTop",
+  horizontal = "scrollLeft"
 }
 
 // export const sizeProp = {
@@ -41,21 +41,21 @@ export enum scrollProp {
 // };
 
 export enum sizeProp {
-  vertical = 'height',
-  horizontal = 'width'
+  vertical = "height",
+  horizontal = "width"
 }
 
 export const positionProp = {
-  [DIRECTION.VERTICAL]: 'top',
-  [DIRECTION.HORIZONTAL]: 'left'
+  [DIRECTION.VERTICAL]: "top",
+  [DIRECTION.HORIZONTAL]: "left"
 };
 
 export const marginProp = {
-  [DIRECTION.VERTICAL]: 'marginTop',
-  [DIRECTION.HORIZONTAL]: 'marginLeft'
+  [DIRECTION.VERTICAL]: "marginTop",
+  [DIRECTION.HORIZONTAL]: "marginLeft"
 };
 
 export const oppositeMarginProp = {
-  [DIRECTION.VERTICAL]: 'marginBottom',
-  [DIRECTION.HORIZONTAL]: 'marginRight'
+  [DIRECTION.VERTICAL]: "marginBottom",
+  [DIRECTION.HORIZONTAL]: "marginRight"
 };

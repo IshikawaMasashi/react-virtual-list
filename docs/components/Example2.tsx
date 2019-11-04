@@ -1,7 +1,6 @@
 import * as React from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Slider from "@material-ui/lab/Slider";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import { VirtualList, ItemStyle } from "../../src";
