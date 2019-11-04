@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useRef, useState, useEffect } from "react";
 import SizeAndPositionManager, { ItemSize } from "./SizeAndPositionManager";
 import {
   ALIGNMENT,
@@ -95,8 +96,6 @@ const STYLE_STICKY_ITEM = {
   position: "sticky" as ItemPosition
 };
 
-const { useRef, useState, useEffect } = React;
-
 function VirtualList(props: Props) {
   const useForceUpdate = () => {
     const [, setState] = useState();
@@ -106,40 +105,9 @@ function VirtualList(props: Props) {
   const forceUpdate = useForceUpdate();
 
   const rootNodeRef = useRef<HTMLDivElement>(null);
-
   const styleCacheRef = useRef<StyleCache>({});
 
   const itemCountRef = useRef(0);
-  // static propTypes = {
-  //   estimatedItemSize: PropTypes.number,
-  //   height: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  //     .isRequired,
-  //   itemCount: PropTypes.number.isRequired,
-  //   itemSize: PropTypes.oneOfType([
-  //     PropTypes.number,
-  //     PropTypes.array,
-  //     PropTypes.func
-  //   ]).isRequired,
-  //   onScroll: PropTypes.func,
-  //   onItemsRendered: PropTypes.func,
-  //   overscanCount: PropTypes.number,
-  //   renderItem: PropTypes.func.isRequired,
-  //   scrollOffset: PropTypes.number,
-  //   scrollToIndex: PropTypes.number,
-  //   scrollToAlignment: PropTypes.oneOf([
-  //     ALIGNMENT.AUTO,
-  //     ALIGNMENT.START,
-  //     ALIGNMENT.CENTER,
-  //     ALIGNMENT.END
-  //   ]),
-  //   scrollDirection: PropTypes.oneOf([
-  //     DIRECTION.HORIZONTAL,
-  //     DIRECTION.VERTICAL
-  //   ]),
-  //   stickyIndices: PropTypes.arrayOf(PropTypes.number),
-  //   style: PropTypes.object,
-  //   width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  // };
 
   const getSize = (
     index: number,
