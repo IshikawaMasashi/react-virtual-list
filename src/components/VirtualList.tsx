@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, useState, useEffect, CSSProperties } from 'react';
+import { useRef, useState, useEffect, useMemo, CSSProperties } from 'react';
 import SizeAndPositionManager, { ItemSize } from './SizeAndPositionManager';
 import {
   ALIGNMENT,
@@ -215,9 +215,10 @@ export default function VirtualList(props: Props) {
   const handleScroll = (event: Event) => {
     const newOffset = getNodeOffset();
 
+    // newOffsetが0のとき、itemが表示されない
     if (
       newOffset < 0 ||
-      newOffset === offset ||
+      // newOffset === offset ||
       event.target !== rootNodeRef.current
     ) {
       return;
@@ -263,7 +264,7 @@ export default function VirtualList(props: Props) {
       itemSizeGetter: itemSizeGetter(itemSize)
     });
     recomputeSizes();
-  }, [itemSize]);
+  }, [itemSize, recomputeSizes, itemSizeGetter, sizeAndPositionManager]);
 
   useEffect(() => {
     setScrollChangeReason(SCROLL_CHANGE_REASON.REQUESTED);
@@ -343,49 +344,64 @@ export default function VirtualList(props: Props) {
     offset,
     overscanCount
   });
-  const items: React.ReactNode[] = [];
-  const wrapperStyle = { ...STYLE_WRAPPER, ...style, height, width };
+  // const items: React.ReactNode[] = [];
+
   const innerStyle = {
     ...STYLE_INNER,
     [sizeProp[scrollDirection]]: sizeAndPositionManager.getTotalSize()
   };
 
-  if (stickyIndices != null && stickyIndices.length !== 0) {
-    stickyIndices.forEach((index: number) =>
-      items.push(
-        renderItem({
-          index,
-          style: getStyle(index, true)
-        })
-      )
-    );
+  const items = useMemo(() => {
+    const result: React.ReactNode[] = [];
+    if (stickyIndices != null && stickyIndices.length !== 0) {
+      stickyIndices.forEach((index: number) =>
+        result.push(
+          renderItem({
+            index,
+            style: getStyle(index, true)
+          })
+        )
+      );
 
-    if (scrollDirection === DIRECTION.HORIZONTAL) {
-      innerStyle.display = 'flex';
+      if (scrollDirection === DIRECTION.HORIZONTAL) {
+        innerStyle.display = 'flex';
+      }
     }
-  }
 
-  if (typeof start !== 'undefined' && typeof stop !== 'undefined') {
-    for (let index = start; index <= stop; index++) {
-      if (stickyIndices != null && stickyIndices.includes(index)) {
-        continue;
+    if (typeof start !== 'undefined' && typeof stop !== 'undefined') {
+      for (let index = start; index <= stop; index++) {
+        if (stickyIndices != null && stickyIndices.includes(index)) {
+          continue;
+        }
+
+        result.push(
+          renderItem({
+            index,
+            style: getStyle(index, false)
+          })
+        );
       }
 
-      items.push(
-        renderItem({
-          index,
-          style: getStyle(index, false)
-        })
-      );
+      if (typeof onItemsRendered === 'function') {
+        onItemsRendered({
+          startIndex: start,
+          stopIndex: stop
+        });
+      }
     }
+    return result;
+  }, [
+    start,
+    stop,
+    getStyle,
+    renderItem,
+    scrollDirection,
+    innerStyle.display,
+    stickyIndices,
+    onItemsRendered
+  ]);
 
-    if (typeof onItemsRendered === 'function') {
-      onItemsRendered({
-        startIndex: start,
-        stopIndex: stop
-      });
-    }
-  }
+  const wrapperStyle = { ...STYLE_WRAPPER, ...style, height, width };
 
   return (
     <div ref={rootNodeRef} {...rest} style={wrapperStyle}>

@@ -10,8 +10,9 @@ module.exports = {
     path: playgroundBasedir,
     filename: 'ReactContexify.js',
   },
+  devtool: 'source-map',
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: ['.ts', '.tsx', '.js'],
   },
   module: {
     rules: [
@@ -21,31 +22,31 @@ module.exports = {
         loader: 'ts-loader',
         options: {
           compilerOptions: {
-            noUnusedLocals: false
-          }
-        }
+            noUnusedLocals: false,
+          },
+        },
       },
       {
         test: /\.s?css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
-            loader: 'css-loader'
+            loader: 'css-loader',
           },
           {
-            loader: 'sass-loader'
-          }
-        ]
-      }
-    ]
+            loader: 'sass-loader',
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: join(playgroundBasedir, 'index.html'),
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
   ],
   devServer: {
     host: 'localhost',
@@ -53,5 +54,5 @@ module.exports = {
     historyApiFallback: true,
     open: true,
     // host: '0.0.0.0'
-  }
+  },
 };

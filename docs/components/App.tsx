@@ -122,7 +122,7 @@ export default function ResponsiveDrawer(props: Props) {
         <div className={classes.title}>
           <Typography variant="h6" noWrap>
             <Link
-              href={"javascript:;"}
+              href={""}
               className={classes.link}
               onClick={() => {
                 setSelectedIndex(0);
