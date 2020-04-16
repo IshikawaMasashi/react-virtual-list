@@ -1,15 +1,15 @@
-import * as React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Slider from "@material-ui/lab/Slider";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import { VirtualList, ItemStyle } from "../../src";
-import VolumeDown from "@material-ui/icons/VolumeDown";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import Input from "@material-ui/core/Input";
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
 
-const { useEffect, useRef } = React;
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Slider from '@material-ui/core/Slider';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import { VirtualList, ItemStyle } from '../../src';
+import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeUp from '@material-ui/icons/VolumeUp';
+import Input from '@material-ui/core/Input';
 
 // スタイルを定義
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,7 +51,7 @@ function Example5({ title }: Props) {
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value === "" ? "" : Number(event.target.value));
+    setValue(event.target.value === '' ? '' : Number(event.target.value));
   };
 
   const handleBlur = () => {
@@ -93,8 +93,8 @@ function Example5({ title }: Props) {
             inputProps={{
               step: 10,
               min: 0,
-              type: "number",
-              "aria-labelledby": "input-slider"
+              type: 'number',
+              'aria-labelledby': 'input-slider'
             }}
           />
         </Grid>

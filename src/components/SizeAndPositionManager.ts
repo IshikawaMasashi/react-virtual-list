@@ -1,5 +1,5 @@
 /* Forked from react-virtualized 💖 */
-import { ALIGNMENT } from "./constants";
+import { ALIGNMENT } from './constants';
 
 export type ItemSizeGetter = (index: number) => number;
 export type ItemSize = number | number[] | ItemSizeGetter;
@@ -183,7 +183,7 @@ export default class SizeAndPositionManager {
     const maxOffset = offset + containerSize;
     let start = this.findNearestItem(offset);
 
-    if (typeof start === "undefined") {
+    if (typeof start === 'undefined') {
       throw Error(`Invalid offset ${offset} specified`);
     }
 

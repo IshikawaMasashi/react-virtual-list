@@ -1,6 +1,6 @@
-import * as React from "react";
-import { useRef, useState, useEffect } from "react";
-import SizeAndPositionManager, { ItemSize } from "./SizeAndPositionManager";
+import * as React from 'react';
+import { useRef, useState, useEffect, CSSProperties } from 'react';
+import SizeAndPositionManager, { ItemSize } from './SizeAndPositionManager';
 import {
   ALIGNMENT,
   DIRECTION,
@@ -10,11 +10,11 @@ import {
   positionProp,
   scrollProp,
   sizeProp
-} from "./constants";
+} from './constants';
 
-export { DIRECTION as ScrollDirection } from "./constants";
+export { DIRECTION as ScrollDirection } from './constants';
 
-export type ItemPosition = "absolute" | "sticky";
+export type ItemPosition = 'absolute' | 'sticky';
 
 export interface ItemStyle {
   position: ItemPosition;
@@ -67,36 +67,55 @@ export interface State {
   scrollChangeReason: SCROLL_CHANGE_REASON;
 }
 
-const STYLE_WRAPPER: React.CSSProperties = {
-  overflow: "auto",
-  willChange: "transform",
-  WebkitOverflowScrolling: "touch"
+const STYLE_WRAPPER: CSSProperties = {
+  overflow: 'auto',
+  willChange: 'transform',
+  WebkitOverflowScrolling: 'touch'
 };
 
-const STYLE_INNER: React.CSSProperties = {
-  position: "relative",
-  width: "100%",
-  minHeight: "100%"
+const STYLE_INNER: CSSProperties = {
+  position: 'relative',
+  width: '100%',
+  minHeight: '100%'
 };
 
 const STYLE_ITEM: {
-  position: ItemStyle["position"];
-  top: ItemStyle["top"];
-  left: ItemStyle["left"];
-  width: ItemStyle["width"];
+  position: ItemStyle['position'];
+  top: ItemStyle['top'];
+  left: ItemStyle['left'];
+  width: ItemStyle['width'];
 } = {
-  position: "absolute" as ItemPosition,
+  position: 'absolute' as ItemPosition,
   top: 0,
   left: 0,
-  width: "100%"
+  width: '100%'
 };
 
 const STYLE_STICKY_ITEM = {
   ...STYLE_ITEM,
-  position: "sticky" as ItemPosition
+  position: 'sticky' as ItemPosition
 };
 
-function VirtualList(props: Props) {
+export default function VirtualList(props: Props) {
+  const {
+    estimatedItemSize,
+    height,
+    itemCount,
+    itemSize,
+    onItemsRendered,
+    onScroll,
+    overscanCount = 3,
+    renderItem,
+    scrollDirection = DIRECTION.VERTICAL,
+    scrollOffset,
+    scrollToAlignment,
+    scrollToIndex,
+    stickyIndices,
+    style,
+    width = '100%',
+    ...rest
+  } = props;
+
   const useForceUpdate = () => {
     const [, setState] = useState();
     return () => setState({});
@@ -109,250 +128,178 @@ function VirtualList(props: Props) {
 
   const itemCountRef = useRef(0);
 
-  const getSize = (
-    index: number,
-    itemSize: number | number[] | ((index: number) => number)
-  ) => {
-    if (typeof itemSize === "function") {
+  const getSize = (index: number, itemSize: ItemSize) => {
+    if (typeof itemSize === 'function') {
       return itemSize(index);
     }
 
     return Array.isArray(itemSize) ? itemSize[index] : itemSize;
   };
 
-  const itemSizeGetter = (itemSize: Props["itemSize"]) => {
+  const itemSizeGetter = (itemSize: Props['itemSize']) => {
     return (index: number) => getSize(index, itemSize);
   };
-  const getEstimatedItemSize = (props: Props /*props = this.props*/) => {
+
+  const getEstimatedItemSize = () => {
     return (
-      props.estimatedItemSize ||
-      (typeof props.itemSize === "number" && props.itemSize) ||
-      50
+      estimatedItemSize || (typeof itemSize === 'number' && itemSize) || 50
     );
   };
   const sizeAndPositionManager = new SizeAndPositionManager({
-    itemCount: props.itemCount,
-    itemSizeGetter: itemSizeGetter(props.itemSize),
-    estimatedItemSize: getEstimatedItemSize(props)
+    itemCount: itemCount,
+    itemSizeGetter: itemSizeGetter(itemSize),
+    estimatedItemSize: getEstimatedItemSize()
   });
 
   const getOffsetForIndex = (
     index: number,
-    scrollToAlignment = props.scrollToAlignment,
-    itemCount: number = props.itemCount
+    newScrollToAlignment = scrollToAlignment,
+    newItemCount = itemCount
   ): number => {
-    const { scrollDirection = DIRECTION.VERTICAL } = props;
-
-    if (index < 0 || index >= itemCount) {
+    if (index < 0 || index >= newItemCount) {
       index = 0;
     }
 
     return sizeAndPositionManager.getUpdatedOffsetForIndex({
-      align: scrollToAlignment,
+      align: newScrollToAlignment,
       containerSize: Number(props[sizeProp[scrollDirection]]),
       currentOffset: offset || 0,
       targetIndex: index
     });
   };
 
-  const [state, setState] = useState({
-    offset:
-      props.scrollOffset ||
-      (props.scrollToIndex != null && getOffsetForIndex(props.scrollToIndex)) ||
-      0,
-    scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
-  });
+  const [offset, setOffset] = useState(
+    scrollOffset ||
+      (scrollToIndex != null && getOffsetForIndex(scrollToIndex)) ||
+      0
+  );
+  const [scrollChangeReason, setScrollChangeReason] = useState(
+    SCROLL_CHANGE_REASON.REQUESTED
+  );
 
-  // const [offset, setOffset] = useState(
-  //   props.scrollOffset ||
-  //     (props.scrollToIndex != null && getOffsetForIndex(props.scrollToIndex)) ||
-  //     0
-  // );
+  const scrollTo = (value: number) => {
+    if (rootNodeRef.current) {
+      rootNodeRef.current[scrollProp[scrollDirection]] = value;
+    }
+  };
 
-  // const [scrollChangeReason, setScrollChangeReason] = useState(
-  //   SCROLL_CHANGE_REASON.REQUESTED
-  // );
+  const getNodeOffset = () => {
+    if (rootNodeRef.current) {
+      return rootNodeRef.current[scrollProp[scrollDirection]];
+    }
+    return 0;
+  };
 
-  // const state: State = {
-  //   offset:
-  //     props.scrollOffset ||
-  //     (props.scrollToIndex != null && getOffsetForIndex(props.scrollToIndex)) ||
-  //     0,
-  //   scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
+  // const handleScroll = (event: Event) => {
+  //   const offset = getNodeOffset();
+
+  //   if (
+  //     offset < 0 ||
+  //     //   state.offset === offset ||
+  //     event.target !== rootNodeRef.current
+  //   ) {
+  //     return;
+  //   }
+
+  //   // setState({
+  //   //   offset,
+  //   //   scrollChangeReason: SCROLL_CHANGE_REASON.OBSERVED
+  //   // });
+  //   setScrollChangeReason(SCROLL_CHANGE_REASON.OBSERVED);
+  //   setOffset(offset);
+
+  //   if (typeof onScroll === "function") {
+  //     onScroll(offset, event);
+  //   }
   // };
-  // const componentDidMount = () => {
-  useEffect(() => {
-    const { scrollOffset, scrollToIndex } = props;
-    rootNodeRef.current!.addEventListener("scroll", handleScroll, {
-      passive: true
-    });
+  const handleScroll = (event: Event) => {
+    const newOffset = getNodeOffset();
 
+    if (
+      newOffset < 0 ||
+      newOffset === offset ||
+      event.target !== rootNodeRef.current
+    ) {
+      return;
+    }
+
+    // setState({
+    //   offset,
+    //   scrollChangeReason: SCROLL_CHANGE_REASON.OBSERVED
+    // });
+    setScrollChangeReason(SCROLL_CHANGE_REASON.OBSERVED);
+    setOffset(newOffset);
+
+    if (typeof onScroll === 'function') {
+      onScroll(newOffset, event);
+    }
+  };
+
+  useEffect(() => {
+    if (rootNodeRef.current) {
+      rootNodeRef.current.addEventListener('scroll', handleScroll, {
+        passive: true
+      });
+    }
     if (scrollOffset != null) {
       scrollTo(scrollOffset);
     } else if (scrollToIndex != null) {
       scrollTo(getOffsetForIndex(scrollToIndex));
     }
     return () => {
-      rootNodeRef.current!.removeEventListener("scroll", handleScroll);
+      if (rootNodeRef.current) {
+        rootNodeRef.current.removeEventListener('scroll', handleScroll);
+      }
     };
   }, []);
-
-  // const componentWillReceiveProps = (nextProps: Props) => {
-  //   const {
-  //     estimatedItemSize,
-  //     itemCount,
-  //     itemSize,
-  //     scrollOffset,
-  //     scrollToAlignment,
-  //     scrollToIndex
-  //   } = props;
-  //   const scrollPropsHaveChanged =
-  //     nextProps.scrollToIndex !== scrollToIndex ||
-  //     nextProps.scrollToAlignment !== scrollToAlignment;
-  //   const itemPropsHaveChanged =
-  //     nextProps.itemCount !== itemCount ||
-  //     nextProps.itemSize !== itemSize ||
-  //     nextProps.estimatedItemSize !== estimatedItemSize;
-
-  //   if (nextProps.itemSize !== itemSize) {
-  //     sizeAndPositionManager.updateConfig({
-  //       itemSizeGetter: itemSizeGetter(nextProps.itemSize)
-  //     });
-  //   }
-
-  //   if (
-  //     nextProps.itemCount !== itemCount ||
-  //     nextProps.estimatedItemSize !== estimatedItemSize
-  //   ) {
-  //     sizeAndPositionManager.updateConfig({
-  //       itemCount: nextProps.itemCount,
-  //       estimatedItemSize: getEstimatedItemSize(nextProps)
-  //     });
-  //   }
-
-  //   if (itemPropsHaveChanged) {
-  //     recomputeSizes();
-  //   }
-
-  //   if (nextProps.scrollOffset !== scrollOffset) {
-  //     setOffset(nextProps.scrollOffset || 0);
-  //     setScrollChangeReason(SCROLL_CHANGE_REASON.REQUESTED);
-  //   } else if (
-  //     typeof nextProps.scrollToIndex === "number" &&
-  //     (scrollPropsHaveChanged || itemPropsHaveChanged)
-  //   ) {
-  //     setOffset(
-  //       getOffsetForIndex(
-  //         nextProps.scrollToIndex,
-  //         nextProps.scrollToAlignment,
-  //         nextProps.itemCount
-  //       )
-  //     );
-  //     setScrollChangeReason(SCROLL_CHANGE_REASON.REQUESTED);
-  //   }
-  // };
-
-  useEffect(() => {
-    const { itemSize } = props;
-    sizeAndPositionManager.updateConfig({
-      itemSizeGetter: itemSizeGetter(itemSize)
-    });
-    recomputeSizes();
-  }, [props.itemSize]);
-
-  useEffect(() => {
-    setState({
-      offset: props.scrollOffset || 0,
-      scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
-    });
-  }, [props.scrollOffset]);
-
-  useEffect(() => {
-    const { itemCount } = props;
-
-    sizeAndPositionManager.updateConfig({
-      itemCount,
-      estimatedItemSize: getEstimatedItemSize(props)
-    });
-
-    recomputeSizes();
-
-    forceUpdate();
-  }, [props.itemCount, props.stickyIndices]);
-
-  useEffect(() => {
-    // const { scrollToIndex, scrollToAlignment, itemCount } = props;
-    // const scrollPropsHaveChanged = true;
-    // const itemPropsHaveChanged = false;
-
-    if (typeof scrollToIndex === "number") {
-      setState({
-        offset: getOffsetForIndex(scrollToIndex, scrollToAlignment, itemCount),
-        scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
-      });
-    }
-  }, [props.scrollToIndex, props.scrollToAlignment]);
-
-  // const componentDidUpdate = (_: Props, prevState: State) => {
-  //   // const { offset, scrollChangeReason } = state;
-
-  //   if (
-  //     prevState.offset !== offset &&
-  //     scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED
-  //   ) {
-  //     scrollTo(offset);
-  //   }
-  // };
-
-  useEffect(() => {
-    const { offset, scrollChangeReason } = state;
-    if (scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED) {
-      scrollTo(offset);
-    }
-  }, [state.offset]);
-
-  const scrollTo = (value: number) => {
-    const { scrollDirection = DIRECTION.VERTICAL } = props;
-
-    rootNodeRef.current![scrollProp[scrollDirection]] = value;
-  };
 
   const recomputeSizes = (startIndex = 0) => {
     styleCacheRef.current = {};
     sizeAndPositionManager.resetItem(startIndex);
   };
 
-  // const getRef = (node: HTMLDivElement): void => {
-  //   rootNode = node;
-  // };
+  useEffect(() => {
+    sizeAndPositionManager.updateConfig({
+      itemSizeGetter: itemSizeGetter(itemSize)
+    });
+    recomputeSizes();
+  }, [itemSize]);
 
-  const handleScroll = (event: Event) => {
-    const { onScroll } = props;
-    const offset = getNodeOffset();
+  useEffect(() => {
+    setScrollChangeReason(SCROLL_CHANGE_REASON.REQUESTED);
+    setOffset(scrollOffset || 0);
+  }, [scrollOffset]);
 
-    if (
-      offset < 0 ||
-      //   state.offset === offset ||
-      event.target !== rootNodeRef.current
-    ) {
-      return;
-    }
-
-    setState({
-      offset,
-      scrollChangeReason: SCROLL_CHANGE_REASON.OBSERVED
+  useEffect(() => {
+    sizeAndPositionManager.updateConfig({
+      itemCount,
+      estimatedItemSize: getEstimatedItemSize()
     });
 
-    if (typeof onScroll === "function") {
-      onScroll(offset, event);
+    recomputeSizes();
+
+    forceUpdate();
+  }, [itemCount, stickyIndices]);
+
+  useEffect(() => {
+    // const scrollPropsHaveChanged = true;
+    // const itemPropsHaveChanged = false;
+
+    if (typeof scrollToIndex === 'number') {
+      setOffset(getOffsetForIndex(scrollToIndex, scrollToAlignment, itemCount));
+      setScrollChangeReason(SCROLL_CHANGE_REASON.REQUESTED);
+      // setState({
+      //   offset: getOffsetForIndex(scrollToIndex, scrollToAlignment, itemCount),
+      //   scrollChangeReason: SCROLL_CHANGE_REASON.REQUESTED
+      // });
     }
-  };
+  }, [scrollToIndex, scrollToAlignment]);
 
-  const getNodeOffset = () => {
-    const { scrollDirection = DIRECTION.VERTICAL } = props;
-
-    return rootNodeRef.current![scrollProp[scrollDirection]];
-  };
+  useEffect(() => {
+    if (scrollChangeReason === SCROLL_CHANGE_REASON.REQUESTED) {
+      scrollTo(offset);
+    }
+  }, [offset]);
 
   const getStyle = (index: number, sticky: boolean) => {
     const style = styleCacheRef.current[index];
@@ -361,7 +308,6 @@ function VirtualList(props: Props) {
       return style;
     }
 
-    const { scrollDirection = DIRECTION.VERTICAL } = props;
     const { size, offset } = sizeAndPositionManager.getSizeAndPositionForIndex(
       index
     );
@@ -382,36 +328,16 @@ function VirtualList(props: Props) {
           [positionProp[scrollDirection]]: offset
         });
   };
-  // render() {
-  const {
-    estimatedItemSize,
-    height,
-    overscanCount = 3,
-    renderItem,
-    itemCount,
-    itemSize,
-    onItemsRendered,
-    onScroll,
-    scrollDirection = DIRECTION.VERTICAL,
-    scrollOffset,
-    scrollToIndex,
-    scrollToAlignment,
-    stickyIndices,
-    style,
-    width,
-    ...rest
-  } = props;
 
   if (itemCountRef.current !== itemCount) {
     sizeAndPositionManager.updateConfig({
       itemCount,
-      estimatedItemSize: getEstimatedItemSize(props)
+      estimatedItemSize: getEstimatedItemSize()
     });
 
     recomputeSizes();
     itemCountRef.current = itemCount;
   }
-  const { offset } = state;
   const { start, stop } = sizeAndPositionManager.getVisibleRange({
     containerSize: Number(props[sizeProp[scrollDirection]]) || 0,
     offset,
@@ -435,11 +361,11 @@ function VirtualList(props: Props) {
     );
 
     if (scrollDirection === DIRECTION.HORIZONTAL) {
-      innerStyle.display = "flex";
+      innerStyle.display = 'flex';
     }
   }
 
-  if (typeof start !== "undefined" && typeof stop !== "undefined") {
+  if (typeof start !== 'undefined' && typeof stop !== 'undefined') {
     for (let index = start; index <= stop; index++) {
       if (stickyIndices != null && stickyIndices.includes(index)) {
         continue;
@@ -453,7 +379,7 @@ function VirtualList(props: Props) {
       );
     }
 
-    if (typeof onItemsRendered === "function") {
+    if (typeof onItemsRendered === 'function') {
       onItemsRendered({
         startIndex: start,
         stopIndex: stop
@@ -467,11 +393,3 @@ function VirtualList(props: Props) {
     </div>
   );
 }
-
-VirtualList.defaultProps = {
-  overscanCount: 3,
-  scrollDirection: DIRECTION.VERTICAL,
-  width: "100%"
-};
-
-export default VirtualList;

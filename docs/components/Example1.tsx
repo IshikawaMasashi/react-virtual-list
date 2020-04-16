@@ -1,4 +1,5 @@
 import * as React from "react";
+const { useEffect, useRef } = React;
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
@@ -8,7 +9,6 @@ import { VirtualList, ItemStyle } from "../../src";
 import VolumeDown from "@material-ui/icons/VolumeDown";
 import VolumeUp from "@material-ui/icons/VolumeUp";
 
-const { useEffect, useRef } = React;
 
 // スタイルを定義
 const useStyles = makeStyles((theme: Theme) =>
