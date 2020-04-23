@@ -9,7 +9,7 @@ import {
   oppositeMarginProp,
   positionProp,
   scrollProp,
-  sizeProp
+  sizeProp,
 } from './constants';
 
 export { DIRECTION as ScrollDirection } from './constants';
@@ -70,13 +70,13 @@ export interface State {
 const STYLE_WRAPPER: CSSProperties = {
   overflow: 'auto',
   willChange: 'transform',
-  WebkitOverflowScrolling: 'touch'
+  WebkitOverflowScrolling: 'touch',
 };
 
 const STYLE_INNER: CSSProperties = {
   position: 'relative',
   width: '100%',
-  minHeight: '100%'
+  minHeight: '100%',
 };
 
 const STYLE_ITEM: {
@@ -88,12 +88,12 @@ const STYLE_ITEM: {
   position: 'absolute' as ItemPosition,
   top: 0,
   left: 0,
-  width: '100%'
+  width: '100%',
 };
 
 const STYLE_STICKY_ITEM = {
   ...STYLE_ITEM,
-  position: 'sticky' as ItemPosition
+  position: 'sticky' as ItemPosition,
 };
 
 export default function VirtualList(props: Props) {
@@ -148,7 +148,7 @@ export default function VirtualList(props: Props) {
   const sizeAndPositionManager = new SizeAndPositionManager({
     itemCount: itemCount,
     itemSizeGetter: itemSizeGetter(itemSize),
-    estimatedItemSize: getEstimatedItemSize()
+    estimatedItemSize: getEstimatedItemSize(),
   });
 
   const getOffsetForIndex = (
@@ -164,7 +164,7 @@ export default function VirtualList(props: Props) {
       align: newScrollToAlignment,
       containerSize: Number(props[sizeProp[scrollDirection]]),
       currentOffset: offset || 0,
-      targetIndex: index
+      targetIndex: index,
     });
   };
 
@@ -239,7 +239,7 @@ export default function VirtualList(props: Props) {
   useEffect(() => {
     if (rootNodeRef.current) {
       rootNodeRef.current.addEventListener('scroll', handleScroll, {
-        passive: true
+        passive: true,
       });
     }
     if (scrollOffset != null) {
@@ -261,7 +261,7 @@ export default function VirtualList(props: Props) {
 
   useEffect(() => {
     sizeAndPositionManager.updateConfig({
-      itemSizeGetter: itemSizeGetter(itemSize)
+      itemSizeGetter: itemSizeGetter(itemSize),
     });
     recomputeSizes();
   }, [itemSize, recomputeSizes, itemSizeGetter, sizeAndPositionManager]);
@@ -274,7 +274,7 @@ export default function VirtualList(props: Props) {
   useEffect(() => {
     sizeAndPositionManager.updateConfig({
       itemCount,
-      estimatedItemSize: getEstimatedItemSize()
+      estimatedItemSize: getEstimatedItemSize(),
     });
 
     recomputeSizes();
@@ -321,19 +321,19 @@ export default function VirtualList(props: Props) {
           // [positionProp[scrollDirection]]: offset,
           [marginProp[scrollDirection]]: offset,
           [oppositeMarginProp[scrollDirection]]: -(offset + size),
-          zIndex: 1
+          zIndex: 1,
         }
       : {
           ...STYLE_ITEM,
           [sizeProp[scrollDirection]]: size,
-          [positionProp[scrollDirection]]: offset
+          [positionProp[scrollDirection]]: offset,
         });
   };
 
   if (itemCountRef.current !== itemCount) {
     sizeAndPositionManager.updateConfig({
       itemCount,
-      estimatedItemSize: getEstimatedItemSize()
+      estimatedItemSize: getEstimatedItemSize(),
     });
 
     recomputeSizes();
@@ -342,13 +342,13 @@ export default function VirtualList(props: Props) {
   const { start, stop } = sizeAndPositionManager.getVisibleRange({
     containerSize: Number(props[sizeProp[scrollDirection]]) || 0,
     offset,
-    overscanCount
+    overscanCount,
   });
   // const items: React.ReactNode[] = [];
 
   const innerStyle = {
     ...STYLE_INNER,
-    [sizeProp[scrollDirection]]: sizeAndPositionManager.getTotalSize()
+    [sizeProp[scrollDirection]]: sizeAndPositionManager.getTotalSize(),
   };
 
   const items = useMemo(() => {
@@ -358,7 +358,7 @@ export default function VirtualList(props: Props) {
         result.push(
           renderItem({
             index,
-            style: getStyle(index, true)
+            style: getStyle(index, true),
           })
         )
       );
@@ -377,7 +377,7 @@ export default function VirtualList(props: Props) {
         result.push(
           renderItem({
             index,
-            style: getStyle(index, false)
+            style: getStyle(index, false),
           })
         );
       }
@@ -385,7 +385,7 @@ export default function VirtualList(props: Props) {
       if (typeof onItemsRendered === 'function') {
         onItemsRendered({
           startIndex: start,
-          stopIndex: stop
+          stopIndex: stop,
         });
       }
     }
@@ -398,7 +398,7 @@ export default function VirtualList(props: Props) {
     scrollDirection,
     innerStyle.display,
     stickyIndices,
-    onItemsRendered
+    onItemsRendered,
   ]);
 
   const wrapperStyle = { ...STYLE_WRAPPER, ...style, height, width };
