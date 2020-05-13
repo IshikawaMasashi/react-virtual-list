@@ -6,13 +6,12 @@ import Paper from '@material-ui/core/Paper';
 import { VirtualList, ItemStyle, VirtualListContainer } from '../../src';
 import GetApp from '@material-ui/icons/GetApp';
 import Build from '@material-ui/icons/Build';
+import Done from '@material-ui/icons/Done';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 // import okaidia from "react-syntax-highlighter/dist/esm/styles/prism/okaidia";
 const styles = require('react-syntax-highlighter/dist/esm/styles/prism');
-
-const { useEffect, useRef } = React;
 
 // スタイルを定義
 const useStyles = makeStyles((theme: Theme) =>
@@ -84,7 +83,7 @@ function Home() {
       <Grid className={classes.grid} container spacing={2} alignItems="center">
         <Grid item xs={12}>
           <div className={classes.container}>
-            <Typography variant="h4" noWrap>
+            <Typography variant="h2" noWrap>
               React Virtual List
             </Typography>
           </div>
@@ -98,33 +97,6 @@ function Home() {
           </div>
         </Grid>
       </Grid>
-
-      <Paper className={classes.paper} elevation={0}>
-        <div className={classes.label}>
-          <GetApp className={classes.icon} />
-          <Typography variant="h5" noWrap>
-            react-virtual-list
-          </Typography>
-        </div>
-        {/* <div style={{ width: '100%', height: '500px' }}>
-          <VirtualList
-            width="auto"
-            height={500}
-            itemCount={100000}
-            renderItem={renderItem}
-            itemSize={itemSize}
-            className="VirtualList"
-          />
-        </div> */}
-        <div style={{ width: '100%', height: '500px' }}>
-          <VirtualListContainer
-            itemCount={100000}
-            renderItem={renderItem}
-            itemSize={itemSize}
-            className="VirtualList"
-          />
-        </div>
-      </Paper>
       <Paper className={classes.paper} elevation={0}>
         <div className={classes.label}>
           <GetApp className={classes.icon} />
@@ -139,7 +111,6 @@ function Home() {
           {'$ npm install @ishikawa_masashi/react-virtual-list'}
         </SyntaxHighlighter>
       </Paper>
-
       <Paper className={classes.paper} elevation={0}>
         <div className={classes.label}>
           <Build className={classes.icon} />
@@ -170,6 +141,32 @@ render(
   document.getElementById('root')
 );`}
         </SyntaxHighlighter>
+      </Paper>
+      <Paper className={classes.paper} elevation={0}>
+        <div className={classes.label}>
+          <Done className={classes.icon} />
+          <Typography variant="h5" noWrap>
+            Basic Example
+          </Typography>
+        </div>
+        {/* <div style={{ width: '100%', height: '500px' }}>
+          <VirtualList
+            width="auto"
+            height={500}
+            itemCount={100000}
+            renderItem={renderItem}
+            itemSize={itemSize}
+            className="VirtualList"
+          />
+        </div> */}
+        <div style={{ width: '100%', height: '500px' }}>
+          <VirtualListContainer
+            itemCount={100000}
+            renderItem={renderItem}
+            itemSize={itemSize}
+            className="VirtualList"
+          />
+        </div>
       </Paper>
     </div>
   );
