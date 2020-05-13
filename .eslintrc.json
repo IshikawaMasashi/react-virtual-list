@@ -12,7 +12,8 @@
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "createDefaultProgram": true
   },
   "rules": {
     "@typescript-eslint/no-non-null-assertion": "warn",

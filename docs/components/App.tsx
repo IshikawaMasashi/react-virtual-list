@@ -1,89 +1,89 @@
-import React from "react";
+import React from 'react';
 
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Divider from "@material-ui/core/Divider";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListSubheader from "@material-ui/core/ListSubheader";
-import MailIcon from "@material-ui/icons/Mail";
-import MenuIcon from "@material-ui/icons/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Divider from '@material-ui/core/Divider';
+import Drawer from '@material-ui/core/Drawer';
+import Hidden from '@material-ui/core/Hidden';
+import IconButton from '@material-ui/core/IconButton';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import MailIcon from '@material-ui/icons/Mail';
+import MenuIcon from '@material-ui/icons/Menu';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 
-import { VirtualList, ItemStyle } from "../../src";
-import VolumeDown from "@material-ui/icons/VolumeDown";
-import VolumeUp from "@material-ui/icons/VolumeUp";
-import Home from "./Home";
-import Example1 from "./Example1";
-import Example2 from "./Example2";
-import Example3 from "./Example3";
-import Example4 from "./Example4";
-import Example5 from "./Example5";
+import { VirtualList, ItemStyle } from '../../src';
+import VolumeDown from '@material-ui/icons/VolumeDown';
+import VolumeUp from '@material-ui/icons/VolumeUp';
+import Home from './Home';
+import Example1 from './Example1';
+import Example2 from './Example2';
+import Example3 from './Example3';
+import Example4 from './Example4';
+import Example5 from './Example5';
 
 enum View {
   Example1,
-  Example2
+  Example2,
 }
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    backgroundColor: "#fff"
+    display: 'flex',
+    backgroundColor: '#fff',
   },
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up('sm')]: {
       width: drawerWidth,
-      flexShrink: 0
-    }
+      flexShrink: 0,
+    },
   },
   appBar: {
     marginLeft: drawerWidth,
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`
-    }
+    [theme.breakpoints.up('sm')]: {
+      width: `calc(100% - ${drawerWidth}px)`,
+    },
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none"
-    }
+    [theme.breakpoints.up('sm')]: {
+      display: 'none',
+    },
   },
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    width: drawerWidth
+    width: drawerWidth,
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(2)
+    padding: theme.spacing(2),
   },
   title: {
-    padding: 16
+    padding: 16,
   },
   link: {
     // margin: theme.spacing(1)
-  }
+  },
 }));
 
 type Props = {};
 export default function ResponsiveDrawer(props: Props) {
   const basicSetup = [
-    "Elements of equal height",
-    "Variable heights",
-    "Horizontal list"
+    'Elements of equal height',
+    'Variable heights',
+    'Horizontal list',
   ];
 
-  const controlledProps = ["Scroll to index", "Controlled scroll offset"];
+  const controlledProps = ['Scroll to index', 'Controlled scroll offset'];
 
   const labels = basicSetup.concat(controlledProps);
 
@@ -93,7 +93,7 @@ export default function ResponsiveDrawer(props: Props) {
     <Example2 />,
     <Example3 />,
     <Example4 />,
-    <Example5 />
+    <Example5 />,
   ];
 
   // const { container } = props;
@@ -122,7 +122,7 @@ export default function ResponsiveDrawer(props: Props) {
         <div className={classes.title}>
           <Typography variant="h6" noWrap>
             <Link
-              href={""}
+              href={''}
               className={classes.link}
               onClick={() => {
                 setSelectedIndex(0);
@@ -145,7 +145,7 @@ export default function ResponsiveDrawer(props: Props) {
             button
             key={text}
             selected={selectedIndex === index + 1}
-            onClick={event => handleListItemClick(event, index + 1)}
+            onClick={(event) => handleListItemClick(event, index + 1)}
           >
             <ListItemText primary={text} />
           </ListItem>
@@ -163,7 +163,7 @@ export default function ResponsiveDrawer(props: Props) {
             button
             key={text}
             selected={selectedIndex === 1 + index + basicSetup.length}
-            onClick={event =>
+            onClick={(event) =>
               handleListItemClick(event, 1 + index + basicSetup.length)
             }
           >
@@ -196,14 +196,14 @@ export default function ResponsiveDrawer(props: Props) {
         <Hidden smUp implementation="css">
           <Drawer
             variant="temporary"
-            anchor={theme.direction === "rtl" ? "right" : "left"}
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
             open={mobileOpen}
             onClose={handleDrawerToggle}
             classes={{
-              paper: classes.drawerPaper
+              paper: classes.drawerPaper,
             }}
             ModalProps={{
-              keepMounted: true // Better open performance on mobile.
+              keepMounted: true, // Better open performance on mobile.
             }}
           >
             {drawer}
@@ -212,7 +212,7 @@ export default function ResponsiveDrawer(props: Props) {
         <Hidden xsDown implementation="css">
           <Drawer
             classes={{
-              paper: classes.drawerPaper
+              paper: classes.drawerPaper,
             }}
             variant="permanent"
             open

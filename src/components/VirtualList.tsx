@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useRef, useState, useEffect, useMemo, CSSProperties } from 'react';
+
 import SizeAndPositionManager, { ItemSize } from './SizeAndPositionManager';
 import {
   ALIGNMENT,
@@ -402,7 +403,6 @@ export default function VirtualList(props: Props) {
   ]);
 
   const wrapperStyle = { ...STYLE_WRAPPER, ...style, height, width };
-
   return (
     <div ref={rootNodeRef} {...rest} style={wrapperStyle}>
       <div style={innerStyle}>{items}</div>

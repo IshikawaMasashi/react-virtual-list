@@ -1,16 +1,16 @@
-import * as React from "react";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import { VirtualList, ItemStyle } from "../../src";
-import GetApp from "@material-ui/icons/GetApp";
-import Build from "@material-ui/icons/Build";
+import * as React from 'react';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import { VirtualList, ItemStyle, VirtualListContainer } from '../../src';
+import GetApp from '@material-ui/icons/GetApp';
+import Build from '@material-ui/icons/Build';
 
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 
 // import okaidia from "react-syntax-highlighter/dist/esm/styles/prism/okaidia";
-const styles = require("react-syntax-highlighter/dist/esm/styles/prism");
+const styles = require('react-syntax-highlighter/dist/esm/styles/prism');
 
 const { useEffect, useRef } = React;
 
@@ -18,15 +18,15 @@ const { useEffect, useRef } = React;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      padding: theme.spacing(2)
+      padding: theme.spacing(2),
     },
     title: {
-      borderBottom: `2px solid ${theme.palette.primary.main}`
+      borderBottom: `2px solid ${theme.palette.primary.main}`,
     },
     paper: {
       padding: 18,
       margin: 18,
-      backgroundColor: "#f5f5f5"
+      backgroundColor: '#f5f5f5',
     },
     grid: {
       //   color: "#fff",
@@ -36,19 +36,19 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     icon: {
       margin: theme.spacing(1),
-      fontSize: 32
+      fontSize: 32,
     },
     container: {
-      color: "#1976d2",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center"
+      color: '#1976d2',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     label: {
-      color: "#1976d2",
-      display: "flex",
-      alignItems: "center"
-    }
+      color: '#1976d2',
+      display: 'flex',
+      alignItems: 'center',
+    },
   })
 );
 
@@ -67,7 +67,7 @@ function Home() {
 
   const renderItem = ({
     style,
-    index
+    index,
   }: {
     style: ItemStyle;
     index: number;
@@ -106,14 +106,24 @@ function Home() {
             react-virtual-list
           </Typography>
         </div>
-        <VirtualList
-          width="auto"
-          height={400}
-          itemCount={100000}
-          renderItem={renderItem}
-          itemSize={itemSize}
-          className="VirtualList"
-        />
+        {/* <div style={{ width: '100%', height: '500px' }}>
+          <VirtualList
+            width="auto"
+            height={500}
+            itemCount={100000}
+            renderItem={renderItem}
+            itemSize={itemSize}
+            className="VirtualList"
+          />
+        </div> */}
+        <div style={{ width: '100%', height: '500px' }}>
+          <VirtualListContainer
+            itemCount={100000}
+            renderItem={renderItem}
+            itemSize={itemSize}
+            className="VirtualList"
+          />
+        </div>
       </Paper>
       <Paper className={classes.paper} elevation={0}>
         <div className={classes.label}>
@@ -126,7 +136,7 @@ function Home() {
           Install React Virtual List source files via npm.
         </Typography>
         <SyntaxHighlighter language="basic" style={styles.okaidia}>
-          {"$ npm install @ishikawa_masashi/react-virtual-list"}
+          {'$ npm install @ishikawa_masashi/react-virtual-list'}
         </SyntaxHighlighter>
       </Paper>
 
