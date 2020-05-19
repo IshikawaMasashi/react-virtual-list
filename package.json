@@ -29,7 +29,8 @@
     "clean:umd": "rimraf dist/*",
     "sass": "node-sass scss/main.scss dist/ReactContexify.css",
     "postsass": "postcss dist/ReactContexify.css --use autoprefixer -m -o dist/ReactContexify.css",
-    "style": "npm run sass && cssnano dist/ReactContexify.css dist/ReactContexify.min.css --no-zindex --no-reduceIdents"
+    "style": "npm run sass && cssnano dist/ReactContexify.css dist/ReactContexify.min.css --no-zindex --no-reduceIdents",
+    "build:web": "webpack --config ./webpack.config.doc.js"
   },
   "repository": {
     "type": "git",

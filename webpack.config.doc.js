@@ -1,16 +1,16 @@
 const webpack = require('webpack');
 const { join } = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const docsBasedir = join(__dirname, 'docs');
 const devBasedir = join(__dirname, 'dev');
 
 module.exports = {
   mode: 'development',
   entry: join(devBasedir, 'index.tsx'),
   output: {
-    path: devBasedir,
-    filename: 'ReactContexify.js',
+    path: docsBasedir,
+    filename: 'ReactMonacoEditor.js',
   },
-  devtool: 'source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
@@ -39,6 +39,10 @@ module.exports = {
             loader: 'sass-loader',
           },
         ],
+      },
+      {
+        test: /\.ttf$/,
+        use: ['file-loader'],
       },
     ],
   },
